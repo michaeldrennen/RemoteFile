@@ -3,6 +3,7 @@
     "description": "A php package that is a wrapper around some common operations on remote files.",
     "type": "library",
     "require": {
+        "php": "^7.0",
         "curl/curl": "^1.6"
     },
     "require-dev": {
@@ -15,5 +16,10 @@
             "email": "michaeldrennen74@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "stable",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
 }
