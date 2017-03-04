@@ -21,4 +21,18 @@ class RemoteFileTest extends TestCase {
         $this->assertEquals($remoteFileSize, '747B');
     }
 
+    public function testHumanReadableResultOver1kB() {
+        $url = 'https://raw.githubusercontent.com/michaeldrennen/RemoteFile/master/beeMovieScript.txt';
+        $remoteFileSize = RemoteFile::getHumanReadableFileSize($url);
+        $this->assertEquals($remoteFileSize, '51.52kB');
+    }
+
+    public function testHumanReadableResultOver1kBWithPrecision() {
+        $url = 'https://raw.githubusercontent.com/michaeldrennen/RemoteFile/master/beeMovieScript.txt';
+        $remoteFileSize = RemoteFile::getHumanReadableFileSize($url,4);
+        $this->assertEquals($remoteFileSize, '51.5176kB');
+    }
+
+
+
 }
