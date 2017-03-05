@@ -33,6 +33,11 @@ class RemoteFileTest extends TestCase {
         $this->assertEquals($remoteFileSize, '51.5176kB');
     }
 
+    public function testLastModifiedTime(){
+        $url = 'http://download.geonames.org/export/dump/readme.txt';
+        $carbonLastModified = RemoteFile::getLastModified($url);
+        $this->assertInstanceOf(\Carbon\Carbon::class, $carbonLastModified);
+    }
 
 
 }

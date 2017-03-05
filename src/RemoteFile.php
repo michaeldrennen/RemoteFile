@@ -1,6 +1,8 @@
 <?php
 namespace MichaelDrennen\RemoteFile;
 
+use Carbon\Carbon;
+
 class RemoteFile {
 
     /**
@@ -73,6 +75,18 @@ class RemoteFile {
         }
 
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . $unit;
+    }
+
+    public static function getLastModified(string $url): Carbon{
+        $lastModifiedHeaderPrefix = 'Last-Modified: ';
+        $headers = get_headers($url);
+        foreach($headers as $index => $header){
+            if( stripos($header,$lastModifiedHeaderPrefix) !== false){
+                $date = str_replace($lastModifiedHeaderPrefix,'',$header);
+                return Carbon::parse($date);
+            }
+        }
+        throw new \Exception("Unable to find a last modified header from $url These were the headers: " . print_r($headers,true));
     }
     
 }
