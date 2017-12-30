@@ -39,5 +39,28 @@ class RemoteFileTest extends TestCase {
         $this->assertInstanceOf(\Carbon\Carbon::class, $carbonLastModified);
     }
 
+    /**
+     * I use google.com because they are not returning a Last-Modified header.
+     *
+     * @throws \MichaelDrennen\RemoteFile\Exceptions\GetHeadersError
+     * @throws \MichaelDrennen\RemoteFile\Exceptions\MissingLastModifiedHeader
+     */
+    public function testMissingLastModifiedShouldThrowException() {
+        $this->expectException( \MichaelDrennen\RemoteFile\Exceptions\MissingLastModifiedHeader::class );
+        $url = 'http://google.com';
+        RemoteFile::getLastModified( $url );
+    }
+
+
+    /**
+     * @throws \MichaelDrennen\RemoteFile\Exceptions\GetHeadersError
+     * @throws \MichaelDrennen\RemoteFile\Exceptions\MissingLastModifiedHeader
+     */
+    public function testLastModifiedShouldThrowExceptionWhenRequestingNonExistentUrl() {
+        $this->expectException( \MichaelDrennen\RemoteFile\Exceptions\GetHeadersError::class );
+        $url = 'http://aklsfghdfagsie7yrlshdgirygafwesygfksydgkfahzbdskygfkzxdygkfhzbsdkfaksdfgkadrennen.com';
+        RemoteFile::getLastModified( $url );
+    }
+
 
 }

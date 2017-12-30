@@ -2,6 +2,8 @@
 namespace MichaelDrennen\RemoteFile;
 
 use Carbon\Carbon;
+use MichaelDrennen\RemoteFile\Exceptions\GetHeadersError;
+use MichaelDrennen\RemoteFile\Exceptions\MissingLastModifiedHeader;
 
 class RemoteFile {
 
@@ -77,16 +79,26 @@ class RemoteFile {
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . $unit;
     }
 
+    /**
+     * @param string $url
+     *
+     * @return \Carbon\Carbon
+     * @throws \MichaelDrennen\RemoteFile\Exceptions\GetHeadersError
+     * @throws \MichaelDrennen\RemoteFile\Exceptions\MissingLastModifiedHeader
+     */
     public static function getLastModified(string $url): Carbon{
         $lastModifiedHeaderPrefix = 'Last-Modified: ';
-        $headers = get_headers($url);
+        $headers                  = @get_headers( $url );
+        if ( false === $headers ):
+            throw new GetHeadersError( "There was an error in the get_headers() php function call: " . implode( "\n", error_get_last() ) );
+        endif;
         foreach($headers as $index => $header){
             if( stripos($header,$lastModifiedHeaderPrefix) !== false){
                 $date = str_replace($lastModifiedHeaderPrefix,'',$header);
                 return Carbon::parse($date);
             }
         }
-        throw new \Exception("Unable to find a last modified header from $url These were the headers: " . print_r($headers,true));
+        throw new MissingLastModifiedHeader( "Unable to find a last modified header from $url These were the headers: " . print_r( $headers, true ) );
     }
     
 }
