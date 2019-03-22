@@ -3,13 +3,13 @@
   "description": "A php package that is a wrapper around some common operations on remote files.",
   "type": "library",
   "require": {
-    "php": "^7.1",
-    "curl/curl": "^1.8",
-    "nesbot/carbon": "^1.22"
+    "php": "^7.3",
+    "curl/curl": "^2.2",
+    "nesbot/carbon": "^2.16"
   },
   "require-dev": {
-    "satooshi/php-coveralls": "^2.0",
-    "phpunit/phpunit": "^6.5"
+    "php-coveralls/php-coveralls": "^2.1",
+    "phpunit/phpunit": "^8.0"
   },
   "license": "MIT",
   "authors": [
